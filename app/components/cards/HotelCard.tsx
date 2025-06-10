@@ -11,13 +11,13 @@ interface HotelCardProps {
   from?: string;
   id: number;
   name: string;
-  location: string;
-  image:string;
+  location: { city: string; country?: string };
+  // image:string;
   stars?: number;
   amenities?: string [];
 }
 
-const HotelCard: React.FC<HotelCardProps> = ({from, id, name, location, image, stars, amenities}) => {
+const HotelCard: React.FC<HotelCardProps> = ({from, id, name, location, stars, amenities}) => {
 
   const router = useRouter();
   const onHotelClick=()=>{
@@ -45,7 +45,7 @@ const HotelCard: React.FC<HotelCardProps> = ({from, id, name, location, image, s
         <div>
           <div className={detailStyles}>
             <Map size={18} />
-            <span className='truncate'>{location}</span>
+            <span className='truncate'>{location?.city}, {location?.country}</span>
           </div>
         </div>
       </CardContent>

@@ -6,7 +6,10 @@ import React from "react";
 interface DetailsHeroProps {
   name: string;
   desc: string;
-  location: string;
+  location: {
+    city: string;
+    country: string;
+  };
   stars: number;
 }
 
@@ -25,7 +28,7 @@ const DetailsHero: React.FC<DetailsHeroProps> = ({
           <div className="font-bold lg:text-6xl md:text-5xl text-3xl">
             {name}
           </div>
-          <div className="w-full lg:w-4/5">{desc}</div>
+          <div className="w-full lg:w-4/5 md:text-3xl text-2xl lg:text-4xl">{desc}</div>
         </div>
 
         {/* Rating and location */}
@@ -33,17 +36,17 @@ const DetailsHero: React.FC<DetailsHeroProps> = ({
           <div className="flex gap-4">
             <div className="flex justify-start items-center gap-1">
               {Array.from({ length: stars }).map((_, i) => (
-                <LucideStar key={i} size={18} color="#FFD700" fill="#FFD700" />
+                <LucideStar key={i} size={20} color="#FFD700" fill="#FFD700" />
               ))}
               {Array.from({ length: 5-stars }).map((_, i) => (
-                <LucideStar key={i} size={18} color="#A9A9A9" fill="#979797" />
+                <LucideStar key={i} size={20} color="#A9A9A9" fill="#979797" />
               ))}
             </div>
-            <span>{stars} starred hotel</span>
+            <span className="md:text-1xl text-xl lg:text-2xl">{stars} starred hotel</span>
           </div>
           <div className="flex gap-4 items-center">
             <MapPin size={18} />
-            <span>{location}</span>
+            <span className="md:text-1xl text-xl lg:text-2xl">{location?.city}, {location?.country}</span>
           </div>
         </div>
 

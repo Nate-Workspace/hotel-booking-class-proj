@@ -21,8 +21,8 @@ const DetailsHero: React.FC<RoomHeroProps> = ({name, price, capacity, desc}) => 
           <div className="font-bold lg:text-6xl md:text-5xl text-3xl">
             {name}
           </div>
-          <div className="w-full lg:w-4/5">
-            {desc} {desc} {desc}
+          <div className="w-full lg:w-4/5 md:text-3xl text-2xl lg:text-4xl">
+            {desc}
           </div>
         </div>
 
@@ -43,8 +43,8 @@ const DetailsHero: React.FC<RoomHeroProps> = ({name, price, capacity, desc}) => 
             <span>Addis Ababa, Region name, Ethiopia</span>
           </div> */}
           <div className="flex flex-col gap-2">
-            <span><span className="text-primary font-semibold">{price}</span> Per night</span>
-            <span><span className="text-primary font-semibold">{capacity}</span> People per room</span>
+            <span className="md:text-1xl text-xl lg:text-2xl"><span className="text-primary font-semibold ">${price}</span> Per night</span>
+            <span className="md:text-1xl text-xl lg:text-2xl"><span className="text-primary font-semibold">{capacity}</span> People per room</span>
           </div>
         </div>
 

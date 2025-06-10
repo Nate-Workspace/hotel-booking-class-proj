@@ -1,6 +1,8 @@
+'use client'
+
 import NavBar from "@/app/components/NavBar";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import HomeHero from "./HomeHero";
 import CenterHeader from "./CenterHeader";
 import RoomCard from "@/app/components/cards/RoomCard";
@@ -8,32 +10,55 @@ import { Button } from "@/components/ui/button";
 import Services from "./Services";
 import HotelCard from "@/app/components/cards/HotelCard";
 import Link from "next/link";
+import {db} from "@/config/firebase";
+import { getDocs, collection } from "firebase/firestore";
 
-const HomePage = async () => {
-  const [hotelsRes, roomsRes] = await Promise.all([fetch(
-    "https://hotelproject-ewqi.onrender.com/api/hotels",
-    {
-      next: { revalidate: 180 },
+const HomePage = () => {
+  const [hotels, setHotels]= useState<any[]>([])
+  const [rooms, setRooms]= useState<any[]>([])
+  const [hotelTransition, setHotelTransition] = useTransition();
+  const [roomTransition, setRoomTransition] = useTransition();
+
+
+  const hotelsCollection = collection(db, "hotel")
+  const roomCollection = collection(db, "room")
+  useEffect(()=>{
+    const getHotels= async ()=>{
+      setHotelTransition(async ()=>{
+        const response= await getDocs(hotelsCollection);
+        const filteredData= response.docs.map((doc)=> ({
+          ...doc.data(),
+          id:doc.id,
+        }))
+        console.log(filteredData)
+        if(filteredData.length === 0){
+          console.log("No hotels found");
+        }
+        setHotels(filteredData)
+      })
     }
-  ),
-  fetch("https://hotelproject-ewqi.onrender.com/api/stays", {
-    next:{revalidate:180},
-  })
-  ]);
+    const getRooms= async ()=>{
+      setRoomTransition(async ()=>{
+        const response= await getDocs(roomCollection);
+        const filteredData= response.docs.map((doc)=> ({
+          ...doc.data(),
+          id:doc.id,
+        }))
+        console.log(filteredData)
+        if(filteredData.length === 0){
+          console.log("No hotels found");
+        }
+        setRooms(filteredData)
+      })
+    }
+    
+    getRooms()
+    getHotels()
+  },[])
 
-  if (!hotelsRes.ok) {
-    console.log("Error fetching hotels");
-    window.alert("Error fetching hotels");
-  }
-  if (!roomsRes.ok) {
-    console.log("Error fetching rooms");
-    window.alert("Error fetching rooms");
-  }
-
-  const hotels = await hotelsRes.json();
-  const stays= await roomsRes.json();
-  console.log(hotels);
-  console.log(stays)
+  
+  console.log("Hotels: ", hotels);
+  console.log("Rooms: ",rooms);
 
   //Css design for the grid
   const gridContainer = {
@@ -83,8 +108,8 @@ const HomePage = async () => {
             description="Comfort, service, and unforgettable experiences all in one place."
           />
           <div className="grid [grid-template-columns:repeat(auto-fit,_minmax(300px,_1fr))] gap-6 w-full overflow-x-hidden box-border items-stretch mb-6 mt-10">
-            {stays.slice(0,6).map((room:any)=>(
-                <RoomCard key={room.uid} from="grid" id={room.uid} name={room.name} capacity={room.capacity} bathroom={room.bathroom_count} bed_count={room.bed_count} desc={room.desc} price={room.price} hotel={room.hotel}/>
+            {rooms.slice(0,6).map((room:any)=>(
+                <RoomCard key={room.id} from="grid" id={room.id} name={room.name} capacity={room.capacity} bathroom={room.bathroom_count} bed_count={room.bed_count} desc={room.desc} price={room.price} hotel={room.hotel}/>
               ))}
           </div>
           <div>
@@ -124,11 +149,11 @@ const HomePage = async () => {
             <div className="flex gap-4 w-max px-2">
               {hotels.map((hotel: any) => (
                 <HotelCard
-                  key={hotel.uid}
-                  id={hotel.uid}
+                  key={hotel.id}
+                  id={hotel.id}
                   name={hotel.name}
                   location={hotel.location}
-                  image={hotel.image_url}
+                  // image={hotel.image}
                   stars={hotel.stars}
                   amenities={hotel.amenities}
                 />
