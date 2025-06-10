@@ -22,6 +22,9 @@ interface RoomCardProps {
   desc?: string;
   hotel: string;
   price: string;
+  check_in?: string;
+  check_out?:string;
+  total_price?: string;
 }
 const RoomCard: React.FC<RoomCardProps> = ({from, id, name, capacity, bathroom, bed_count, desc, hotel, price}) => {
   const router= useRouter()

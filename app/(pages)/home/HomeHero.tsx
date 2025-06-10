@@ -60,7 +60,7 @@ const HomeHero = () => {
           </div>
         </div>
 
-        <div className="bg-white flex flex-row justify-start rounded-md font-poppins w-5/6 px-8 py-6 border-0 shadow-[0_0_5px_rgba(0,0,0,0.1)]">
+        {/* <div className="bg-white flex flex-row justify-start rounded-md font-poppins w-5/6 px-8 py-6 border-0 shadow-[0_0_5px_rgba(0,0,0,0.1)]">
           <Tabs defaultValue="hotels" onValueChange={setTab} className="w-full">
             <TabsList className="ml-[-.3rem] mt-[-.5rem]">
               <TabsTrigger value="hotels" className="hover:cursor-pointer">Hotels</TabsTrigger>
@@ -99,7 +99,7 @@ const HomeHero = () => {
               </form>
             </TabsContent>
           </Tabs>
-        </div>
+        </div> */}
       </div>
     </div>
   );

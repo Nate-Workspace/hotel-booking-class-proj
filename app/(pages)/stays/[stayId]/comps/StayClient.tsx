@@ -19,6 +19,7 @@ import {auth} from "@/config/firebase";
 import { addDoc, getDocs } from "firebase/firestore";
 import {collection} from "firebase/firestore";
 import { db } from "@/config/firebase";
+import { useRouter } from "next/navigation";
 
 interface StayClientProps {
   stayDetails: any;
@@ -31,6 +32,7 @@ const StayClient: React.FC<StayClientProps> = ({ stayDetails, hotelDetails, load
     from: new Date(),
     to: new Date(),
   });
+  const router= useRouter();
   //FIrebase 
   const user= auth.currentUser;
   const bookingsCollection = collection(db, "booking");
@@ -76,6 +78,10 @@ const StayClient: React.FC<StayClientProps> = ({ stayDetails, hotelDetails, load
   
 
   const handleBookNow = async () => {
+    if(!user){
+      router.push("/login")
+      window.alert("login to book a stay");
+    }
     if (!date?.from || !date?.to) return alert("Please select a valid date range.");
 
     const nights =
@@ -96,6 +102,8 @@ const StayClient: React.FC<StayClientProps> = ({ stayDetails, hotelDetails, load
 
     try {
       await addDoc(bookingsCollection, payload)
+      console.log("Booking successful:", payload);
+      window.alert("Booking successful! Check your bookings page.");
     } catch (error) {
       console.error("Error booking room:", error);
     }
@@ -149,7 +157,7 @@ const StayClient: React.FC<StayClientProps> = ({ stayDetails, hotelDetails, load
           <div>
             <div className="flex gap-4 items-center">
               <MapPin size={18} />
-              <span>{hotelDetails.location.city}, {hotelDetails.location.country}</span>
+              <span>{hotelDetails.location?.city}, {hotelDetails.location?.country}</span>
             </div>
             <span>
               From coastal hideaways to mountain retreats, find your next

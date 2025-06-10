@@ -49,9 +49,9 @@ const DetailsHero: React.FC<RoomHeroProps> = ({name, price, capacity, desc}) => 
         </div>
 
         {/* CTA */}
-        <div className="w-full">
+        {/* <div className="w-full">
           <Button className="hover:cursor-pointer">BOOK A STAY</Button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
